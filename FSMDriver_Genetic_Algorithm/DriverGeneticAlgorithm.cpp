@@ -153,18 +153,6 @@ void DriverGeneticAlgorithm::log(int generation, Host population[], Host bestInd
 	}
 
 	logFile.close();
-
-	//log for an easy parser creation
-	logFile.open("logAnalisys.txt", std::ios_base::app);
-	logFile << endl << "Generation " << generation << endl;
-    
-    logFile << asctime(timeinfo) << endl;
-	for(unsigned int i=0; i < sortPopulation.size(); i++){
-		logFile << i << " " << sortPopulation[i].getTrack1().at(0) << " " << sortPopulation[i].getFitness() << " " << sortPopulation[i].getTrack1().at(2) <<  endl;
-	}
-
-	logFile.close();
-
 }
 
 
