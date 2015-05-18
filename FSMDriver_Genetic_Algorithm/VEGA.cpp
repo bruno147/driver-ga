@@ -79,11 +79,8 @@ void Host::runTest(const std::vector<string>& trackNames) {
 
 	string track_path( bin_path.substr(0,pos) + "configs/" );
 
-	// track_path += trackName;
-
 	vector<string> strID = SharedMemory(trackNames.size());
 
-	// int myID = stoi(strID);
 	string command1, command2;
 	for (unsigned int i = 0; i < trackNames.size(); ++i)
 	{
@@ -92,7 +89,6 @@ void Host::runTest(const std::vector<string>& trackNames) {
 
 		if(i < trackNames.size()-1)
 		{
-			// command1 += " & ";
 			command2 += " & ";
 		}
 	}
@@ -103,13 +99,6 @@ void Host::runTest(const std::vector<string>& trackNames) {
 		fuser += port(i+1) + "/udp";
 		if(system(fuser.c_str()) == -1) cout << "ERROR" << endl;
 	}
-
-	// cout << "command1:" << endl;
-	// cout << command1 << endl;
-	// cout << "command2:" << endl;
-	// cout << command2 << endl;
-
-	// getchar();
 
 	if(system(command1.c_str()) == -1)	cout << "ERROR" << endl;
 	if(system(command2.c_str()) == -1)	cout << "ERROR" << endl;
@@ -125,27 +114,19 @@ std::string Host::port(int p)
 }
 
 std::vector<float> Host::getResults(int memoryID) {
-	char* shared_memory;	//for communication between TORCS and GA
+	float* shared_memory;	//for communication between TORCS and GA
 	/* Reattach the shared memory segment, at a different address. */
-	shared_memory = (char*) shmat (memoryID, (void*) 0x5000000, 0);
-	//result = atof(shared_memory);
-	string temp(shared_memory);
+	shared_memory = (float*) shmat (memoryID, (void*) 0x5000000, 0);
 
-	float total_time = 0;
-	float raced_dist = 0;
-	float damage = 0;
-	if(temp.length() > 0)
-	{
-		unsigned pos2 = temp.find(' ');
-		unsigned pos3 = temp.substr(pos2+1).find(' ');
-		total_time = stof(temp.substr(0, pos2));
-		damage = stof(temp.substr(pos2+1,pos3));
-		raced_dist = stof(temp.substr(pos2+pos3+1));
-	}
+	float total_time = shared_memory[0];
+	float damage	 = shared_memory[1];
+	float raced_dist = shared_memory[2];
+
 	cout << "total_time: " << total_time << endl;
 	cout << "damage: " << damage << endl;
 	cout << "raced_dist: " << raced_dist << endl;
 	vector<float> results = { total_time, raced_dist, damage };
+
 	/* Detach the shared memory segment. */
 	shmdt (shared_memory);
 
@@ -162,28 +143,20 @@ void Host::getResults(const vector<string>& memoriesIDs) {
 	{
 		int memoryID = stoi(memoriesIDs.at(i));
 
-		char* shared_memory;	//for communication between TORCS and GA
+		float* shared_memory;	//for communication between TORCS and GA
 		/* Reattach the shared memory segment, at a different address. */
-		shared_memory = (char*) shmat (memoryID, (void*) 0x5000000, 0);
-		//result = atof(shared_memory);
-		string temp(shared_memory);
+		shared_memory = (float*) shmat (memoryID, NULL, 0);
 
-		float total_time = 0;
-		float raced_dist = 0;
-		float damage = 0;
-		if(temp.length() > 0)
-		{
-			unsigned pos2 = temp.find(' ');
-			unsigned pos3 = temp.substr(pos2+1).find(' ');
-			total_time = stof(temp.substr(0, pos2));
-			damage = stof(temp.substr(pos2+1,pos3));
-			raced_dist = stof(temp.substr(pos2+pos3+1));
-		}
+		float total_time = shared_memory[0];
+		float damage 	 = shared_memory[1];
+		float raced_dist = shared_memory[2];
+
 		cout << "Race: " << i << endl;
 		cout << "total_time: " << total_time << endl;
 		cout << "damage: " << damage << endl;
 		cout << "raced_dist: " << raced_dist << endl;
 		vector<float> results = { total_time, raced_dist, damage };
+		
 		/* Detach the shared memory segment. */
 		shmdt (shared_memory);
 
@@ -197,7 +170,7 @@ void Host::getResults(const vector<string>& memoriesIDs) {
 
 string Host::SharedMemory() {
 	int segment_id;
-	const int shared_segment_size = 0xC;//0x6400;
+	const int shared_segment_size = 3*sizeof(float);//0x6400;
 
 	/* Allocate a shared memory segment. */
 	segment_id = shmget (IPC_PRIVATE, shared_segment_size,IPC_CREAT|IPC_EXCL|S_IRUSR|S_IWUSR);
@@ -211,7 +184,7 @@ std::vector<string> Host::SharedMemory(int numberOfMemories) {
 	for (int i = 0; i < numberOfMemories; ++i)
 	{
 		int segment_id;
-		const int shared_segment_size = 0xC;//0x6400;
+		const int shared_segment_size = 3*sizeof(float);//0x6400;
 
 		/* Allocate a shared memory segment. */
 		segment_id = shmget (IPC_PRIVATE, shared_segment_size,IPC_CREAT|IPC_EXCL|S_IRUSR|S_IWUSR);

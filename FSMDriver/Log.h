@@ -27,16 +27,18 @@ public:
     }
 
 
-    //send totalTime to shared memory
+    // send totalTime to shared memory
     void saveTotalTime(int segment_id){
-        char* shared_memory;
+        float* shared_memory;
 
         /* Attach the shared memory segment. */
-        shared_memory = (char*) shmat (segment_id, 0, 0);
+        shared_memory = (float*) shmat (segment_id, 0, 0);
     
-        //Assigned shared memory
+        // Assigned shared memory
+        shared_memory[0] = totalTime;
+        shared_memory[1] = damage;
+        shared_memory[2] = distRaced;
 
-        sprintf (shared_memory, "%f %f %f", totalTime, damage, distRaced);
 
         /* Detach the shared memory segment. */
         shmdt (shared_memory);
