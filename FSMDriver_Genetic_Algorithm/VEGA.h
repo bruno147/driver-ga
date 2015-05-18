@@ -22,7 +22,7 @@
 #define MUTATION_RATE 0.01 	// Rate defined by Núnez-Letamendia
 #define POPULATION_SIZE 30	// Must be an EVEN number
 #define GENE_LENGTH 32
-#define MAX_ALLOWABLE_GENERATIONS 616
+#define MAX_ALLOWABLE_GENERATIONS 3
 #define NUMBER_OF_PARAMETERS 17	// Adjust to problem needs
 #define CHROMOSOME_LENGTH GENE_LENGTH * NUMBER_OF_PARAMETERS
 #define CHROMOSOME_TO_PRESERVE 4			//Must be an EVEN number
@@ -56,6 +56,8 @@ public:
 class Host: public Chromosome {
 	private:
 		std::vector<float> track1;
+		std::string port(int);
+
 	public:
 
 		Host() {
@@ -66,8 +68,11 @@ class Host: public Chromosome {
 			fitness = in_fitness;
 		}
 		std::string SharedMemory();
+		std::vector<std::string> SharedMemory(int);
 		std::vector<float> getResults(int memoryID);
-		virtual void runTest(std::string trackName,int testNumber);
+		void getResults(const std::vector<std::string>& memoriesID);
+		virtual void runTest(std::string trackName, int testNumber);
+		virtual void runTest(const std::vector<std::string>& trackName);
 		void mutate();
 		std::string hexToBin(std::string sHex);
 		std::string  getRandomBits(int length);	

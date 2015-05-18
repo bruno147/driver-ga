@@ -28,7 +28,7 @@ public:
 	Host pool(const std::vector<Host> &population);
 	std::vector<float> getDataTrack(Host specimen);
 	std::string hexToBin (std::string sHex);
-	void status(int generation, int indivualNumber, int raceNumber);
+	void status(int generation, int indivualNumber);
 
 };
 

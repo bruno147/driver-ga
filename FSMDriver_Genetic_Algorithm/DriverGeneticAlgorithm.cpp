@@ -18,7 +18,8 @@ int main (int argc, char* argv[]) {
 		cout << "ERROR\nPOPULATION_SIZE must be an even number\n";
 		return 0;
 	}
-	vector<string> tracks = {"as","cs","ds","et5"};
+	// vector<string> tracks = {"as","cs","ds","et5"};
+	vector<string> tracks = {"as","cs"};
 	DriverGeneticAlgorithm ga(tracks);
 	ga.run();
 	return 0;
@@ -41,10 +42,8 @@ void DriverGeneticAlgorithm::run() {
 		while (!evolved) {
 			for (unsigned int i = 0; i < POPULATION_SIZE; ++i){
 				if (Population[i].getFitness() == 0) {
-					for (unsigned int j = 0; j < track.size(); ++j) {
-						status(generation_count, i, j);
-						Population[i].runTest(track.at(j),j+1);
-					}
+					status(generation_count, i);
+					Population[i].runTest(track);
 				}
 			}
 
@@ -270,9 +269,9 @@ Host DriverGeneticAlgorithm::pool(const std::vector<Host> &population)
 	return population.at( rand()%PARENTS_TO_BE_CHOSEN );
 }
 
-void DriverGeneticAlgorithm::status(int generation, int indivualNumber, int raceNumber){
+void DriverGeneticAlgorithm::status(int generation, int indivualNumber){
 	cout << endl 
 	<< "Generation: " << generation+1 << " of " << MAX_ALLOWABLE_GENERATIONS << endl
-	<< "Individual: " << indivualNumber+1 << " of " << POPULATION_SIZE << endl
-	<< "Race: " << raceNumber+1 << " of " << this->track.size() << endl;
+	<< "Individual: " << indivualNumber+1 << " of " << POPULATION_SIZE << endl;
+	// << "Race: " << raceNumber+1 << " of " << this->track.size() << endl;
 }
