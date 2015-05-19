@@ -19,7 +19,7 @@ int main (int argc, char* argv[]) {
 		return 0;
 	}
 	// vector<string> tracks = {"as","cs","ds","et5"};
-	vector<string> tracks = {"as","cs"};
+	vector<string> tracks = {"spring","wheel2","etrack3","forza"};
 	DriverGeneticAlgorithm ga(tracks);
 	ga.run();
 	return 0;
