@@ -126,6 +126,12 @@ void DriverGeneticAlgorithm::log(int generation, Host population[], Host bestInd
    
     if(generation==0){
     	logFile << "Genetic Algorithm at " << asctime(timeinfo) << endl;
+	    logFile << "TRACKS: ";
+        for(unsigned int i = 0; i < track.size(); ++i)
+        {
+            logFile << track.at(i) << ", ";
+        }
+        logFile << endl;
     	logFile << "Parameters:" << endl;
     	logFile << "CROSSOVER_RATE: " << CROSSOVER_RATE << endl;
     	logFile << "MUTATION_RATE: " << MUTATION_RATE << endl;
