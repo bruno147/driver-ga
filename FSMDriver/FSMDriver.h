@@ -1,12 +1,12 @@
 #ifndef FSMDRIVER_H
 #define FSMDRIVER_H
 
-#include "WrapperBaseDriver.h"
+#include "GADriver.h"
 #include "FSM.h"
 #include <bitset>
 #include <algorithm>
 
-class FSMDriver : public WrapperBaseDriver, public DrivingFSM<FSMDriver> {
+class FSMDriver : public GADriver, public DrivingFSM<FSMDriver> {
 private:
     float accel, brake, steer; //Actuators values
     int gear;

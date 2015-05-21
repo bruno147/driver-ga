@@ -5,7 +5,7 @@ find_package(Boost REQUIRED COMPONENTS filesystem system)
 
 # Source files:
 include_directories(include FSMDriver)
-set(SOURCES
+set(SOURCES 
 	FSMDriver/FSM.h
 	FSMDriver/FSMDriver.h
 	FSMDriver/FSMDriver.cpp
@@ -45,8 +45,6 @@ if(GA)
 	set(ELITISM ON)
 	# GA source
 	set(GA_SOURCES
-		FSMDriver_Genetic_Algorithm/GADriver.h
-		FSMDriver_Genetic_Algorithm/GADriver.cpp
 		FSMDriver_Genetic_Algorithm/VEGA.cpp
 		FSMDriver_Genetic_Algorithm/VEGA.h
 		FSMDriver_Genetic_Algorithm/Chromosome.cpp
