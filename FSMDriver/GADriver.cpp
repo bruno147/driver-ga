@@ -10,7 +10,7 @@ void GADriver::saveFitness(int segment_id) {
     shared_memory = (float*) shmat (segment_id, 0, 0);
 
     // Assigned shared memory
-    shared_memory[0] = fitness;
+    shared_memory = &fitness;
 
     /* Detach the shared memory segment. */
     shmdt (shared_memory);

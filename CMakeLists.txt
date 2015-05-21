@@ -14,6 +14,7 @@ set(SOURCES
 	FSMDriver/TestTrack.cpp
 	FSMDriver/Knowledge.cpp
 	FSMDriver/Stuck.cpp
+	FSMDriver/GADriver.cpp
 	src/CarControl.cpp
 	src/CarState.cpp
 	src/client.cpp
@@ -39,19 +40,16 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 # GA
 if(GA)
-	include_directories(include FSMDriver Genetic Algorithm)
+	include_directories(include FSMDriver_Genetic_Algorithm)
 
 	# set(ROULLETE ON)
 	set(ELITISM ON)
 	# GA source
 	set(GA_SOURCES
-		FSMDriver_Genetic_Algorithm/GADriver.h
-		FSMDriver_Genetic_Algorithm/GADriver.cpp
 		FSMDriver_Genetic_Algorithm/VEGA.cpp
-		FSMDriver_Genetic_Algorithm/VEGA.h
 		FSMDriver_Genetic_Algorithm/Chromosome.cpp
-		FSMDriver_Genetic_Algorithm/DriverGeneticAlgorithm.h
-		FSMDriver_Genetic_Algorithm/DriverGeneticAlgorithm.cpp)
+		FSMDriver_Genetic_Algorithm/DriverGeneticAlgorithm.cpp
+		)
 
 
 	set(CMAKE_CXX_FLAGS "-g -Wall -O3 -std=c++0x -D ELITISM")

@@ -95,12 +95,12 @@ FSMDriver::FSMDriver(int argc, char** argv) : DrivingFSM<FSMDriver>(this), accel
 
 CarControl FSMDriver::wDrive(CarState cs) {
     transition(cs);
-    Log::instance()->updateLog(current_state, cs);
-    Log::instance()->saveTotalTime(segment_id);
+    setFitness(cs);
+    saveFitness(segment_id);
     return update(cs);
 }
 
-void FSMDriver::onRestart() {
+ void FSMDriver::onRestart() {
     cout << "Restarting the race!" << endl;
 }
 
