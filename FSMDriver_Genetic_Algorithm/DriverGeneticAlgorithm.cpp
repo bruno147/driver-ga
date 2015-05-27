@@ -18,7 +18,6 @@ int main (int argc, char* argv[]) {
 		cout << "ERROR\nPOPULATION_SIZE must be an even number\n";
 		return 0;
 	}
-	// vector<string> tracks = {"as","cs","ds","et5"};
 	vector<string> tracks = {"spring","wheel2","etrack3","forza"};
 	DriverGeneticAlgorithm ga(tracks);
 	ga.run();

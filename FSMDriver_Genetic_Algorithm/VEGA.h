@@ -22,10 +22,10 @@
 #define MUTATION_RATE 0.01 	// Rate defined by Núnez-Letamendia
 #define POPULATION_SIZE 30	// Must be an EVEN number
 #define GENE_LENGTH 32
-#define MAX_ALLOWABLE_GENERATIONS 3
+#define MAX_ALLOWABLE_GENERATIONS 616
 #define NUMBER_OF_PARAMETERS 17	// Adjust to problem needs
 #define CHROMOSOME_LENGTH GENE_LENGTH * NUMBER_OF_PARAMETERS
-#define CHROMOSOME_TO_PRESERVE 4			//Must be an EVEN number
+#define CHROMOSOME_TO_PRESERVE 4			// Must be an EVEN number
 #define PARENTS_TO_BE_CHOSEN 10
 
 
@@ -69,7 +69,7 @@ class Host: public Chromosome {
 		}
 		std::string SharedMemory();
 		std::vector<std::string> SharedMemory(int);
-		std::vector<float> getResults(int memoryID);
+		void getResults(int memoryID);
 		void getResults(const std::vector<std::string>& memoriesID);
 		virtual void runTest(std::string trackName, int testNumber);
 		virtual void runTest(const std::vector<std::string>& trackName);

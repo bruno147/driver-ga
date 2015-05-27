@@ -45,7 +45,6 @@ string	Host::getRandomBits (int length) {
 }
 
 
-
 void Host::runTest(string trackName, int testNumber) {
 	string bin_path(boost::filesystem::current_path().native());
 	unsigned pos = bin_path.find("bin");
@@ -68,8 +67,7 @@ void Host::runTest(string trackName, int testNumber) {
 	if(system(command1.c_str()) == -1)	cout << "ERROR" << endl;
 	if(system(command2.c_str()) == -1)	cout << "ERROR" << endl;
 
-	this->track1 = getResults(myID);
-
+	getResults(myID);
 }
 
 void Host::runTest(const std::vector<string>& trackNames) {
@@ -113,28 +111,22 @@ std::string Host::port(int p)
 	return to_string(p);
 }
 
-std::vector<float> Host::getResults(int memoryID) {
+void Host::getResults(int memoryID) {
 	float* shared_memory;	//for communication between TORCS and GA
-	/* Reattach the shared memory segment, at a different address. */
+	// Reattach the shared memory segment, at a different address.
 	shared_memory = (float*) shmat (memoryID, (void*) 0x5000000, 0);
 
-	float total_time = shared_memory[0];
-	float damage	 = shared_memory[1];
-	float raced_dist = shared_memory[2];
+	float fitness = shared_memory[0];
 
-	cout << "total_time: " << total_time << endl;
-	cout << "damage: " << damage << endl;
-	cout << "raced_dist: " << raced_dist << endl;
-	vector<float> results = { total_time, raced_dist, damage };
+	cout << "fitness: " << fitness << endl;
 
-	/* Detach the shared memory segment. */
+	// Detach the shared memory segment.
 	shmdt (shared_memory);
 
-	/* Deallocate the shared memory segment. */
+	// Deallocate the shared memory segment.
 	shmctl (memoryID, IPC_RMID, 0);
 
-	this->setFitness(raced_dist);
-	return results;
+	this->setFitness(fitness);
 }
 
 void Host::getResults(const vector<string>& memoriesIDs) {
@@ -143,36 +135,30 @@ void Host::getResults(const vector<string>& memoriesIDs) {
 	{
 		int memoryID = stoi(memoriesIDs.at(i));
 
-		float* shared_memory;	//for communication between TORCS and GA
+		float* shared_memory;	// for communication between TORCS and GA
 		/* Reattach the shared memory segment, at a different address. */
 		shared_memory = (float*) shmat (memoryID, NULL, 0);
 
-		float total_time = shared_memory[0];
-		float damage 	 = shared_memory[1];
-		float raced_dist = shared_memory[2];
+		float fitness = shared_memory[0];
 
 		cout << "Race: " << i << endl;
-		cout << "total_time: " << total_time << endl;
-		cout << "damage: " << damage << endl;
-		cout << "raced_dist: " << raced_dist << endl;
-		vector<float> results = { total_time, raced_dist, damage };
-		
+		cout << "fitness: " << fitness << endl;
+
 		/* Detach the shared memory segment. */
 		shmdt (shared_memory);
 
 		/* Deallocate the shared memory segment. */
 		shmctl (memoryID, IPC_RMID, 0);
 
-		this->setFitness(raced_dist);
+		this->setFitness(fitness);
 	}
 }
-
 
 string Host::SharedMemory() {
 	int segment_id;
 	const int shared_segment_size = 3*sizeof(float);//0x6400;
 
-	/* Allocate a shared memory segment. */
+	// Allocate a shared memory segment.
 	segment_id = shmget (IPC_PRIVATE, shared_segment_size,IPC_CREAT|IPC_EXCL|S_IRUSR|S_IWUSR);
 
 
