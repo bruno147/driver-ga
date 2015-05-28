@@ -23,7 +23,7 @@ public:
         assert(s);
         damage=cs.getDamage();
         distRaced = cs.getDistRaced();
-        totalTime = cs.getLastLapTime();      
+        totalTime = cs.getLastLapTime();
     }
 
 
