@@ -65,7 +65,7 @@ void DriverGeneticAlgorithm::run() {
 				Host offspring1 = pool(sortPopulation);
 				Host offspring2 = pool(sortPopulation);
 
-				crossover 	(offspring1, offspring2);
+				uniformCrossover 	(offspring1, offspring2);
 
 				offspring1.mutate();
 				offspring1.resetFitness();
@@ -105,6 +105,31 @@ void DriverGeneticAlgorithm::crossover (Host &offspring1, Host &offspring2) {
 	    string new2		= (offspring2.getBits()).substr (0, crossover) + (offspring1.getBits()).substr (crossover, CHROMOSOME_LENGTH);
 	//    cout << "offspring1 " << binToHex(offspring1) << endl;
 	//    cout << "offspring2 " << binToHex(offspring2) << endl;
+
+	    offspring1.setBits(new1);
+	    offspring2.setBits(new2);
+	}			  
+}
+
+
+void DriverGeneticAlgorithm::uniformCrossover (Host &offspring1, Host &offspring2) {
+	if (RANDOM_NUMBER < CROSSOVER_RATE) {
+		Host mask1, mask2;
+	  	string new1, new2;
+
+	  	for (int i = 0; i < CHROMOSOME_LENGTH; i++) {
+	  		if (mask1.getBits().at(i) == '0')
+	  			new1.push_back(offspring1.getBits().at(i));
+	  		else
+	  			new1.push_back(offspring2.getBits().at(i));
+	  	}
+
+	  	for (int i = 0; i < CHROMOSOME_LENGTH; i++) {
+	  		if (mask2.getBits().at(i) == '0')
+	  			new2.push_back(offspring1.getBits().at(i));
+	  		else
+	  			new2.push_back(offspring2.getBits().at(i));
+	  	}
 
 	    offspring1.setBits(new1);
 	    offspring2.setBits(new2);

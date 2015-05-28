@@ -20,7 +20,8 @@ private:
 public:
 	DriverGeneticAlgorithm(std::vector<std::string> tracks) : generation_count(0), track(tracks) {};
 	void run();
-	void    crossover(Host &offspring1, Host &offspring2);
+	void uniformCrossover(Host &offspring1, Host &offspring2);
+	void crossover(Host &offspring1, Host &offspring2);
 	void log(int generation, Host population[], Host bestChromosome);
 	std::vector<Host> merge_sort(const std::vector<Host> &data);
 	std::string binToHex(std::string rowresult);

@@ -1,8 +1,9 @@
 #include "GADriver.h"
 
 void GADriver::setFitness(CarState cs) {
-    static int laslapTime = 0;
-    if(laslapTime != cs.getLastLapTime())	fitness += cs.getLastLapTime();
+//    static int laslapTime = 0;
+//    if(laslapTime != cs.getLastLapTime())	fitness += cs.getLastLapTime();
+	fitness = cs.getDistRaced();
 }
 
 void GADriver::saveFitness(int segment_id) {
