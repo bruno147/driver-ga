@@ -80,7 +80,7 @@
 
   <section name="Drivers Start List">
     <section name="1">
-      <attstr name="module" val="berniw"/>
+      <attstr name="module" val="scr_server"/>
       <attnum name="idx" val="1"/>
     </section>
 

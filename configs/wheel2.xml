@@ -80,20 +80,11 @@
 
   <section name="Drivers Start List">
     <section name="1">
-      <attstr name="module" val="berniw"/>
-      <attnum name="idx" val="1"/>
-    </section>
-
-    <section name="2">
-      <attstr name="module" val="berniw3"/>
-      <attnum name="idx" val="1"/>
-    </section>
-
-    <section name="3">
-      <attstr name="module" val="berniw2"/>
+      <attstr name="module" val="scr_server"/>
       <attnum name="idx" val="1"/>
     </section>
 
   </section>
 
 </params>
+
