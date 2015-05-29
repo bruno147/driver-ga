@@ -83,7 +83,7 @@ void Host::runTest(const std::vector<string>& trackNames) {
 	for (unsigned int i = 0; i < 4; ++i)
 	{
 		command1 += "torcs -r " + track_path + trackNames.at(i) + ".xml & ";
-		command2 += "./FSMDriver " + bits + " " + strID.at(i) + " port:" + port(i+1); // + " maxSteps:10000";
+		command2 += "./FSMDriver " + bits + " " + strID.at(i) + " port:" + port(i+1) + " maxSteps:10000";
 
 		if(i < 3)
 		{
@@ -105,7 +105,7 @@ void Host::runTest(const std::vector<string>& trackNames) {
 	for (unsigned int i = 4; i < trackNames.size(); ++i)
 	{
 		command1 += "torcs -r " + track_path + trackNames.at(i) + ".xml & ";
-		command2 += "./FSMDriver " + bits + " " + strID.at(i) + " port:" + port(i+1); // + " maxSteps:10000";
+		command2 += "./FSMDriver " + bits + " " + strID.at(i) + " port:" + port(i+1) + " maxSteps:10000";
 
 		if(i < trackNames.size()-1)
 		{
