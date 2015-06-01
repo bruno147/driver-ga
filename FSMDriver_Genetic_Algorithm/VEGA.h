@@ -23,7 +23,7 @@
 #define POPULATION_SIZE 30	// Must be an EVEN number
 #define GENE_LENGTH 32
 #define MAX_ALLOWABLE_GENERATIONS 616
-#define NUMBER_OF_PARAMETERS 17	// Adjust to problem needs
+#define NUMBER_OF_PARAMETERS 22	// Adjust to problem needs
 #define CHROMOSOME_LENGTH GENE_LENGTH * NUMBER_OF_PARAMETERS
 #define CHROMOSOME_TO_PRESERVE 4			// Must be an EVEN number
 #define PARENTS_TO_BE_CHOSEN 10
