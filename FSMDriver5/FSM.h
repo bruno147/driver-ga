@@ -19,9 +19,9 @@ public:
     //! Defines the driving policy of the state.
     virtual CarControl drive(Driver *, CarState &) = 0;
     //! Initial function called by each state.
-    virtual void enter(Driver *){}
+    virtual void enter(Driver *) {}
     //! Final function called by each state.
-    virtual void exit(Driver *){}
+    virtual void exit(Driver *) {}
 };
 
 /*! \class DrivingFSM
