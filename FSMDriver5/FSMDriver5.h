@@ -62,6 +62,9 @@ public:
 
     /**Main driving function.*/
     virtual CarControl wDrive(CarState cs);
+
+    float normalization(unsigned int number);
+    
 };
 
 #endif // FSMDriver5_H

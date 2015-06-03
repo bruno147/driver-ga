@@ -78,27 +78,41 @@ FSMDriver5::FSMDriver5(int argc, char** argv) : DrivingFSM<FSMDriver5>(this) {
     // MAX_APPROACHING_CURVE_VAR = 400;
     // MIN_APPROACHING_CURVE_VAR = 300;
 
-    float LOW_GEAR_LIMIT = binToFloat(getArgument(0, argv));
-    float LOW_RPM = binToFloat(getArgument(1, argv));
-    float AVERAGE_RPM = binToFloat(getArgument(2, argv));
-    float HIGH_RPM = binToFloat(getArgument(3, argv));
+    //temporary normalization of LOW_GEAR_LIMIT between 1 and 6(integer)
+    float LOW_GEAR_LIMIT = 1+round(5*normalization(binToUsignedInt(getArgument(0, argv))));
 
-    float STUCK_SPEED = binToFloat(getArgument(4, argv));
+    //temporary normalization of LOW_RPM, AVERAGE_RPM, HIGH_RPM between 0 and 15000
+    float LOW_RPM = round(15000*normalization(binToUsignedInt(getArgument(1, argv))));
+    float AVERAGE_RPM = round(15000*normalization(binToUsignedInt(getArgument(2, argv))));
+    float HIGH_RPM = round(15000*normalization(binToUsignedInt(getArgument(3, argv))));
+
+    //0 to 50
+    float STUCK_SPEED = 50*normalization(binToUsignedInt(getArgument(4, argv)));
+
     float MIN_RACED_DISTANCE = binToFloat(getArgument(5, argv));
     float MAX_STUCK_TICKS = binToFloat(getArgument(6, argv));
     float MAX_SLOW_SPEED_TICKS = binToFloat(getArgument(7, argv));
 
     float MAX_STEERING = binToFloat(getArgument(8, argv));
-    float TARGET_POS = binToFloat(getArgument(9, argv));
-    float BASE_SPEED =  binToFloat(getArgument(10, argv));
 
-    float MAX_SKIDDING =  binToFloat(getArgument(11, argv));
-    float NEGATIVE_ACCEL_PERCENT =  binToFloat(getArgument(12, argv));
-    float VELOCITY_GEAR_4 =  binToFloat(getArgument(13, argv));
-    float VELOCITY_GEAR_3 =  binToFloat(getArgument(14, argv));
-    float VELOCITY_GEAR_2 =  binToFloat(getArgument(15, argv));
-    float MAX_RETURN_ANGLE = binToFloat(getArgument(16, argv));
-    float MIN_RETURN_ANGLE =  binToFloat(getArgument(17, argv));
+    //temporary normalization of BASE_SPEED between 0 and 340 *just because*
+    float BASE_SPEED =  340*normalization(binToUsignedInt(getArgument(9, argv)));
+
+    float MAX_SKIDDING =  500*normalization(binToUsignedInt(getArgument(10, argv)));
+
+    float VELOCITY_GEAR_4 = 500*normalization(binToUsignedInt(getArgument(11, argv)));
+    float VELOCITY_GEAR_3 = 500*normalization(binToUsignedInt(getArgument(12, argv)));
+    float VELOCITY_GEAR_2 = 500*normalization(binToUsignedInt(getArgument(13, argv)));
+
+    //percent
+    float NEGATIVE_ACCEL_PERCENT = normalization(binToUsignedInt(getArgument(14, argv)));
+    
+    //0 to PI
+    float MAX_RETURN_ANGLE = M_PI*normalization(binToUsignedInt(getArgument(15, argv)));
+    float MIN_RETURN_ANGLE = M_PI*normalization(binToUsignedInt(getArgument(16, argv)));
+
+
+    float TARGET_POS = binToFloat(getArgument(17, argv));
 
     MAX_STRAIGHT_LINE_VAR =  binToFloat(getArgument(18, argv));
     MIN_STRAIGHT_LINE_VAR =  binToFloat(getArgument(19, argv));
@@ -128,6 +142,11 @@ void FSMDriver5::onRestart() {
 string FSMDriver5::getArgument(int i, char** argv){
     return string(argv[1]).substr((i*32), ((i+1)*32));
 }
+
+float FSMDriver5::normalization(unsigned int number){
+    return (float)((double)number/binToUsignedInt("11111111111111111111111111111111"));
+}
+
 void FSMDriver5::onShutdown() {
     Log::instance()->saveTotalTime(segment_id);
     cout << "End of race!" << endl;
