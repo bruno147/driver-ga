@@ -80,7 +80,8 @@ void Host::runTest(const std::vector<string>& trackNames) {
 	vector<string> strID = SharedMemory(trackNames.size());
 
 	string command1, command2;
-	for (unsigned int i = 0; i < trackNames.size(); ++i)
+
+	for (unsigned int i = 0; i < 4; ++i)
 	{
 		command1 += "torcs -r " + track_path + trackNames.at(i) + ".xml & ";
 		command2 += "./FSMDriver " + bits + " " + strID.at(i) + " port:" + port(i+1) + " maxSteps:10000";
@@ -90,6 +91,7 @@ void Host::runTest(const std::vector<string>& trackNames) {
 			command2 += " & ";
 		}
 	}
+
 	for (int i = 0; i < 10; ++i)
 	{
 		string fuser("fuser -k ");
@@ -99,28 +101,30 @@ void Host::runTest(const std::vector<string>& trackNames) {
 
 	if(system(command1.c_str()) == -1)	cout << "ERROR" << endl;
 	if(system(command2.c_str()) == -1)	cout << "ERROR" << endl;
+
 	command1.clear();
 	command2.clear();
 
-	// for (unsigned int i = 4; i < trackNames.size(); ++i)
-	// {
-	// 	command1 += "torcs -r " + track_path + trackNames.at(i) + ".xml & ";
-	// 	command2 += "./FSMDriver " + bits + " " + strID.at(i) + " port:" + port(i+1) + " maxSteps:10000";
+	for (unsigned int i = 4; i < trackNames.size(); ++i)
+	{
+		command1 += "torcs -r " + track_path + trackNames.at(i) + ".xml & ";
+		command2 += "./FSMDriver " + bits + " " + strID.at(i) + " port:" + port(i+1) + " maxSteps:10000";
 
-	// 	if(i < trackNames.size()-1)
-	// 	{
-	// 		command2 += " & ";
-	// 	}
-	// }
-	// for (int i = 0; i < 10; ++i)
-	// {
-	// 	string fuser("fuser -k ");
-	// 	fuser += port(i+1) + "/udp";
-	// 	if(system(fuser.c_str()) == -1) cout << "ERROR" << endl;
-	// }
+		if(i < trackNames.size()-1)
+		{
+			command2 += " & ";
+		}
+	}
 
-	// if(system(command1.c_str()) == -1)	cout << "ERROR" << endl;
-	// if(system(command2.c_str()) == -1)	cout << "ERROR" << endl;
+	for (int i = 0; i < 10; ++i)
+	{
+		string fuser("fuser -k ");
+		fuser += port(i+1) + "/udp";
+		if(system(fuser.c_str()) == -1) cout << "ERROR" << endl;
+	}
+
+	if(system(command1.c_str()) == -1)	cout << "ERROR" << endl;
+	if(system(command2.c_str()) == -1)	cout << "ERROR" << endl;
 
 	getResults(strID);
 }
