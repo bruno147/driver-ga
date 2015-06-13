@@ -1,17 +1,21 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(FSMDriver5)
+project(FSMDriver)
 find_package(Boost REQUIRED COMPONENTS filesystem system)
 
 # Source files:
-include_directories(include FSMDriver5)
+include_directories(include FSMDriver)
 set(SOURCES
-	FSMDriver5/FSMDriver5.cpp
-	FSMDriver5/StraightLine.cpp
-	FSMDriver5/ApproachingCurve.cpp
-	FSMDriver5/Curve.cpp
-	FSMDriver5/OutOfTrack.cpp
-	FSMDriver5/Stuck.cpp
+	FSMDriver/FSMDriver.cpp
+	# FSMDriver/StraightLine.cpp
+	# FSMDriver/ApproachingCurve.cpp
+	# FSMDriver/Curve.cpp
+	FSMDriver/InsideTrack.cpp
+	FSMDriver/TestTrack.cpp
+	FSMDriver/GADriver.cpp
+	FSMDriver/OutOfTrack.cpp
+	FSMDriver/Stuck.cpp
+	FSMDriver/Knowledge.cpp
 	src/CarControl.cpp
 	src/CarState.cpp
 	src/client.cpp
@@ -19,7 +23,7 @@ set(SOURCES
 	src/WrapperBaseDriver.cpp)
 
 # Compiler flags
-set(DRIVER FSMDriver5)
+set(DRIVER FSMDriver)
 set(EXTFLAGS "-D __DRIVER_CLASS__=${DRIVER} -D __DRIVER_INCLUDE__='\"${CMAKE_SOURCE_DIR}/${DRIVER}/${DRIVER}.h\"'")	
 add_definitions(-g -O3 -Wall -std=c++0x ${EXTFLAGS})
 

@@ -162,8 +162,8 @@ void FSMDriver::transition(CarState &cs) {
             if(cs.getSpeedX() > 85) {
                 memory.push_back(Knowledge(abs(cs.getSpeedX())*0.9, cs.getDistFromStart()));
                 sort(memory.begin(), memory.end(), Knowledge::aux_sort);
-                state = OutOfTrack::instance();
             }
+            state = OutOfTrack::instance();
         }
     }
 
