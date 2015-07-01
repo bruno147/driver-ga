@@ -15,6 +15,17 @@ float Chromosome::binToFloat (string bits) {
 	return *value;
 }
 
+void Chromosome::mutate () {
+	for (unsigned int i = 0; i < bits.length(); i++) {
+		if (RANDOM_NUMBER < MUTATION_RATE) {
+			if (bits.at(i) == '1')
+				bits.at(i) = '0';
+			else
+				bits.at(i) = '1';
+		}
+	}
+	return;
+}
 
 string Chromosome::floatToBin (float value) {
 	int bit = 0;

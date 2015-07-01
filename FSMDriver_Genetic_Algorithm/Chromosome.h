@@ -6,6 +6,18 @@
 #include <vector>
 #include <cstdlib>
 
+//GA parameters
+#define CROSSOVER_RATE 0.95	// Rate defined by Núnez-Letamendia
+#define MUTATION_RATE 0.01 	// Rate defined by Núnez-Letamendia
+#define POPULATION_SIZE 30	// Must be an EVEN number
+#define GENE_LENGTH 32
+#define MAX_ALLOWABLE_GENERATIONS 616 //Calculated using A LANDER , J. 1992. On optimal population size of genetic algorithms.
+#define NUMBER_OF_PARAMETERS 22	// Number of parameters to be evolved
+#define CHROMOSOME_LENGTH GENE_LENGTH * NUMBER_OF_PARAMETERS
+#define CHROMOSOME_TO_PRESERVE 4			// Must be an EVEN number
+#define PARENTS_TO_BE_CHOSEN 10
+
+
 //! @def Calculates a randon number between 0.0 and 1.0
 #define RANDOM_NUMBER ((float)rand()/(RAND_MAX))
 
@@ -45,11 +57,12 @@ public:
 	 * 
 	 * @param  chromossome
 	 */
-	virtual void runTest(std::string,int) = 0;
+	virtual void runTest(const std::vector<std::string>& setOfTracks) = 0;
 	//! mehtod set for genes
 	inline void setBits(std::string bits) {
 		this->bits = bits;
 	}
+	//! method for redefining an individual fitness
 	inline void resetFitness() {
 		this->fitness = 0;
 	}
@@ -85,6 +98,9 @@ public:
 	 * @return chromossome base-2
 	 */
 	std::string	floatToBin(float value);
+
+	//Mutate a chromossome
+	void mutate();
 };
 
 #endif // CHROMOSOME_H
