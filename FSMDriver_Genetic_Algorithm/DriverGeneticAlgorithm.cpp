@@ -34,65 +34,40 @@ void DriverGeneticAlgorithm::run() {
 	//flag
 	bool	evolved			= false;
 
+	//Initialize a random population
+	vector<Individual> Population;
+	for (int i = 0; i < POPULATION_SIZE; i++) Population.push_back(Individual());
+
+	// Genetic Algorithm actual loop
 	while (!evolved) {
-		Individual Population[POPULATION_SIZE];
 
-		// Genetic Algorithm actual loop
-		while (!evolved) {
+		evaluatePopulation(Population);
 
-			evaluatePopulation(Population);
+		//sort the population and store best individual
+		Population = merge_sort(Population);
+		bestIndividual = Population[0];
 
-			vector<Individual> sortedPopulation;
-			for (int i = 0; i < POPULATION_SIZE; ++i)	sortedPopulation.push_back(Population[i]);
-			sortedPopulation = merge_sort(sortedPopulation);
-			bestIndividual = sortedPopulation[0];
+		//Records the current population into logfile
+		generateLog(generationCount, Population, bestIndividual);
+		
+		//Aplly crossover and mutation
+		Population = updatePopulation(Population);
 
-			//Records the current population into logfile
-			generateLog(generationCount, Population, bestIndividual);
-			// Creates new population members through crossover and/or mutation (by chance)
-			Individual	newPopulation[POPULATION_SIZE];
-			int 			populationCounter=0;
-			for (int i = 0; i < CHROMOSOME_TO_PRESERVE; ++i) newPopulation[i] = sortedPopulation.at(i);
-			populationCounter = CHROMOSOME_TO_PRESERVE;
-			while (populationCounter < POPULATION_SIZE) {
-				// Selects 2 new members to apply crossover and mutation
+		cout << endl << endl;
+		cout << "Generation " << generationCount+1 << " complete." << "  || " <<"Generation " << generationCount+1 << " complete." << "  || " <<"Generation " << generationCount+1 << " complete." << endl;
 
-				Individual offspring1 = pool(sortedPopulation);
-				Individual offspring2 = pool(sortedPopulation);
+		++generationCount;
 
-				onePointCrossover 	(offspring1, offspring2);
-
-				offspring1.mutate();
-				offspring1.resetFitness();
-				offspring2.mutate();
-				offspring2.resetFitness();
-				// Replaces the old members for the new ones
-				newPopulation[populationCounter++] = offspring1;
-				newPopulation[populationCounter++] = offspring2;	
-			}
-			for (int i = 0; i < POPULATION_SIZE; i++) {
-				Population[i] = newPopulation[i];
-			}
-
-			//*Population = *reproducePopulation(sortedPopulation);
-
-			cout << endl << endl;
-			cout << "Generation " << generationCount+1 << " complete." << "  || " <<"Generation " << generationCount+1 << " complete." << "  || " <<"Generation " << generationCount+1 << " complete." << endl;
-
-			++generationCount;
-
-			// If the maximum number of generations is reached, ends program
-			if (generationCount >= MAX_ALLOWABLE_GENERATIONS) {
-				cout << "Maximum allowable generations reached! Chromosome evolved." << endl;
-				evolved = true;
-			}
+		// If the maximum number of generations is reached, ends program
+		if (generationCount >= MAX_ALLOWABLE_GENERATIONS) {
+			cout << "Maximum allowable generations reached! Chromosome evolved." << endl;
+			evolved = true;
 		}
-
 	}
 
 }
 
-void DriverGeneticAlgorithm::evaluatePopulation(Individual *Population) {
+void DriverGeneticAlgorithm::evaluatePopulation(vector<Individual> &Population) {
 	for (unsigned int i = 0; i < POPULATION_SIZE; ++i){
 		if (Population[i].getFitness() == 0) {
 			status(generationCount, i);
@@ -101,12 +76,10 @@ void DriverGeneticAlgorithm::evaluatePopulation(Individual *Population) {
 	}
 }
 
-Individual* DriverGeneticAlgorithm::reproducePopulation(vector<Individual> &data) {
+vector<Individual> DriverGeneticAlgorithm::updatePopulation(vector<Individual> &data) {
 	// Creates new population members through crossover and/or mutation (by chance)
-	Individual	*newPopulation[POPULATION_SIZE];
-	int populationCounter = 0;
-	for (int i = 0; i < CHROMOSOME_TO_PRESERVE; ++i) *newPopulation[i] = data.at(i);
-	populationCounter = CHROMOSOME_TO_PRESERVE;
+	vector<Individual>	newPopulation(data);
+	int populationCounter = CHROMOSOME_TO_PRESERVE;
 	while (populationCounter < POPULATION_SIZE) {
 		// Selects 2 new members to apply crossover and mutation
 
@@ -120,10 +93,10 @@ Individual* DriverGeneticAlgorithm::reproducePopulation(vector<Individual> &data
 		offspring2.mutate();
 		offspring2.resetFitness();
 		// Replaces the old members for the new ones
-		*newPopulation[populationCounter++] = offspring1;
-		*newPopulation[populationCounter++] = offspring2;	
+		newPopulation[populationCounter++] = offspring1;
+		newPopulation[populationCounter++] = offspring2;	
 	}
-	return *newPopulation;
+	return newPopulation;
 }
 
 void DriverGeneticAlgorithm::onePointCrossover (Individual &offspring1, Individual &offspring2) {
@@ -164,7 +137,7 @@ void DriverGeneticAlgorithm::uniformCrossover (Individual &offspring1, Individua
 	}			  
 }
 
-void DriverGeneticAlgorithm::generateLog(int generation, Individual population[], Individual bestIndividual){
+void DriverGeneticAlgorithm::generateLog(int generation, vector<Individual> Population, Individual bestIndividual){
 	ofstream logFile;
     time_t rawtime;
     struct tm * timeinfo;
@@ -202,12 +175,9 @@ void DriverGeneticAlgorithm::generateLog(int generation, Individual population[]
     logFile << endl << "Best Chromosome so far: " << setw(164) << endl;
     logFile << binToHex(bestIndividual.getBits()) << "\t" << bestIndividual.getFitness() << endl;
     logFile << endl << "Population: " << endl;
-    std::vector<Individual> sortPopulation;
-    for(unsigned int i = 0; i < POPULATION_SIZE; i++)	sortPopulation.push_back(population[i]);
-	sortPopulation = merge_sort(sortPopulation);
 
-	for(unsigned int i=0; i < sortPopulation.size(); i++){
-		logFile << binToHex(sortPopulation[i].getBits()) << "\t" << sortPopulation[i].getFitness() <<  endl;
+	for(unsigned int i=0; i < Population.size(); i++){
+		logFile << binToHex(Population[i].getBits()) << "\t" << Population[i].getFitness() <<  endl;
 	}
 
 	logFile.close();
