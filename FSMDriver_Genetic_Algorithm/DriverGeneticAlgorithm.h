@@ -25,10 +25,14 @@ public:
 	DriverGeneticAlgorithm(std::vector<std::string> setOfTracks) : generationCount(0), setOfTracks(setOfTracks) {};
 	//GA main method
 	void run();
+	//Method for testing each individual in the population
+	void evaluatePopulation(Individual *Population);
+	//Method for applying crossover and mutation to the population
+	Individual* reproducePopulation(std::vector<Individual> &data);
 	//Uniform Crossover method 
 	void uniformCrossover(Individual &offspring1, Individual &offspring2);
 	//One-point crossover method
-	void crossover(Individual &offspring1, Individual &offspring2);
+	void onePointCrossover(Individual &offspring1, Individual &offspring2);
 	//Method for writting a file with the generation log
 	void generateLog(int generation, Individual population[], Individual bestChromosome);
 	//Method used for ordenating the individuals
