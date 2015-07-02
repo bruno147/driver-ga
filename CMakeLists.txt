@@ -47,7 +47,7 @@ if(GA)
 	set(ELITISM ON)
 	# GA source
 	set(GA_SOURCES
-		FSMDriver_Genetic_Algorithm/VEGA.cpp
+		FSMDriver_Genetic_Algorithm/Individual.cpp
 		FSMDriver_Genetic_Algorithm/Chromosome.cpp
 		FSMDriver_Genetic_Algorithm/DriverGeneticAlgorithm.cpp
 		)
