@@ -17,6 +17,7 @@
 #define CHROMOSOME_TO_PRESERVE 4			// Must be an EVEN number
 #define PARENTS_TO_BE_CHOSEN 10
 
+#define MAX_SIMULTANEOUS_TESTS 4	//Caution. 4 tests running simultaneously demmands a lot of computational resource
 
 //! @def Calculates a randon number between 0.0 and 1.0
 #define RANDOM_NUMBER ((float)rand()/(RAND_MAX))

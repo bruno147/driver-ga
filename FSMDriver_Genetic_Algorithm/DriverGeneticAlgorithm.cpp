@@ -18,8 +18,8 @@ int main (int argc, char* argv[]) {
 		cout << "ERROR\nPOPULATION_SIZE must be an even number\n";
 		return 0;
 	}
-	vector<string> tracks = {"spring","wheel2","etrack3","forza"};//,"dirt2","mixed1","mixed2","dirt6"};
-	DriverGeneticAlgorithm ga(tracks);
+	vector<string> setOfTracks = {"spring","wheel2","etrack3","forza"};//,"dirt2","mixed1","mixed2","dirt6"};
+	DriverGeneticAlgorithm ga(setOfTracks);
 	ga.run();
 	return 0;
 }
@@ -35,35 +35,33 @@ void DriverGeneticAlgorithm::run() {
 	bool	evolved			= false;
 
 	while (!evolved) {
-		Host Population[POPULATION_SIZE];
+		Individual Population[POPULATION_SIZE];
 
 		// Genetic Algorithm actual loop
 		while (!evolved) {
 			for (unsigned int i = 0; i < POPULATION_SIZE; ++i){
 				if (Population[i].getFitness() == 0) {
-					status(generation_count, i);
-					Population[i].runTest(track);
+					status(generationCount, i);
+					Population[i].runTest(setOfTracks);
 				}
 			}
 
-			std::vector<Host> sortPopulation;
+			std::vector<Individual> sortPopulation;
 			for (int i = 0; i < POPULATION_SIZE; ++i)	sortPopulation.push_back(Population[i]);
 			sortPopulation = merge_sort(sortPopulation);
-			//bestRace = sortPopulation.at(0).getTrack1();
 			bestIndividual = sortPopulation.at(0);
 
-			// @toDo Include Log Method to keep every generation archived
-			log(generation_count, Population, bestIndividual);
+			generateLog(generationCount, Population, bestIndividual);
 			// Creates new population members through crossover and/or mutation (by chance)
-			Host	newPopulation[POPULATION_SIZE];
+			Individual	newPopulation[POPULATION_SIZE];
 			int 			populationCounter=0;
 			for (int i = 0; i < CHROMOSOME_TO_PRESERVE; ++i) newPopulation[i] = sortPopulation.at(i);
 			populationCounter = CHROMOSOME_TO_PRESERVE;
 			while (populationCounter < POPULATION_SIZE) {
 				// Selects 2 new members to apply crossover and mutation
 
-				Host offspring1 = pool(sortPopulation);
-				Host offspring2 = pool(sortPopulation);
+				Individual offspring1 = pool(sortPopulation);
+				Individual offspring2 = pool(sortPopulation);
 
 				crossover 	(offspring1, offspring2);
 
@@ -79,12 +77,12 @@ void DriverGeneticAlgorithm::run() {
 				Population[i] = newPopulation[i];
 			}
 			cout << endl << endl;
-			cout << "Generation " << generation_count+1 << " complete." << "  || " <<"Generation " << generation_count+1 << " complete." << "  || " <<"Generation " << generation_count+1 << " complete." << endl;
+			cout << "Generation " << generationCount+1 << " complete." << "  || " <<"Generation " << generationCount+1 << " complete." << "  || " <<"Generation " << generationCount+1 << " complete." << endl;
 
-			++generation_count;
+			++generationCount;
 
 			// If the maximum number of generations is reached, ends program
-			if (generation_count >= MAX_ALLOWABLE_GENERATIONS) {
+			if (generationCount >= MAX_ALLOWABLE_GENERATIONS) {
 				cout << "Maximum allowable generations reached! Chromosome evolved." << endl;
 				evolved = true;
 			}
@@ -95,7 +93,7 @@ void DriverGeneticAlgorithm::run() {
 }
 
 
-void DriverGeneticAlgorithm::crossover (Host &offspring1, Host &offspring2) {
+void DriverGeneticAlgorithm::crossover (Individual &offspring1, Individual &offspring2) {
 	if (RANDOM_NUMBER < CROSSOVER_RATE) {
 	    // Randomic choice of the crossover point
 	    int crossover 	= (int) (RANDOM_NUMBER * CHROMOSOME_LENGTH);
@@ -112,9 +110,9 @@ void DriverGeneticAlgorithm::crossover (Host &offspring1, Host &offspring2) {
 }
 
 
-void DriverGeneticAlgorithm::uniformCrossover (Host &offspring1, Host &offspring2) {
+void DriverGeneticAlgorithm::uniformCrossover (Individual &offspring1, Individual &offspring2) {
 	if (RANDOM_NUMBER < CROSSOVER_RATE) {
-		Host mask1, mask2;
+		Individual mask1, mask2;
 	  	string new1, new2;
 
 	  	for (int i = 0; i < CHROMOSOME_LENGTH; i++) {
@@ -136,7 +134,7 @@ void DriverGeneticAlgorithm::uniformCrossover (Host &offspring1, Host &offspring
 	}			  
 }
 
-void DriverGeneticAlgorithm::log(int generation, Host population[], Host bestIndividual){
+void DriverGeneticAlgorithm::generateLog(int generation, Individual population[], Individual bestIndividual){
 	ofstream logFile;
     time_t rawtime;
     struct tm * timeinfo;
@@ -151,9 +149,9 @@ void DriverGeneticAlgorithm::log(int generation, Host population[], Host bestInd
     if(generation==0){
     	logFile << "Genetic Algorithm at " << asctime(timeinfo) << endl;
 	    logFile << "TRACKS: ";
-        for(unsigned int i = 0; i < track.size(); ++i)
+        for(unsigned int i = 0; i < setOfTracks.size(); ++i)
         {
-            logFile << track.at(i) << ", ";
+            logFile << setOfTracks.at(i) << ", ";
         }
         logFile << endl;
     	logFile << "Parameters:" << endl;
@@ -174,7 +172,7 @@ void DriverGeneticAlgorithm::log(int generation, Host population[], Host bestInd
     logFile << endl << "Best Chromosome so far: " << setw(164) << endl;
     logFile << binToHex(bestIndividual.getBits()) << "\t" << bestIndividual.getFitness() << endl;
     logFile << endl << "Population: " << endl;
-    std::vector<Host> sortPopulation;
+    std::vector<Individual> sortPopulation;
     for(unsigned int i = 0; i < POPULATION_SIZE; i++)	sortPopulation.push_back(population[i]);
 	sortPopulation = merge_sort(sortPopulation);
 
@@ -261,20 +259,20 @@ std::string DriverGeneticAlgorithm::binToHex(string rowresult)
 	return endresult;
 }
 
-std::vector<Host> DriverGeneticAlgorithm::merge_sort(const std::vector<Host> &data)
+std::vector<Individual> DriverGeneticAlgorithm::merge_sort(const std::vector<Individual> &data)
 {
 	if (data.size() <= 1) {
 		return data;
 	}
  
 	int middle = data.size() / 2;
-	std::vector<Host> left(data.begin(), data.begin()+middle);
-	std::vector<Host> right(data.begin()+middle, data.end());
+	std::vector<Individual> left(data.begin(), data.begin()+middle);
+	std::vector<Individual> right(data.begin()+middle, data.end());
  
 	left = merge_sort(left);
 	right = merge_sort(right);
  
-	std::vector<Host> result(data.size());
+	std::vector<Individual> result(data.size());
 	std::merge(left.begin(), left.end(), 
 	           right.begin(), right.end(),
 	           result.begin());
@@ -282,7 +280,7 @@ std::vector<Host> DriverGeneticAlgorithm::merge_sort(const std::vector<Host> &da
 	return result;
 }
 
-Host DriverGeneticAlgorithm::pool(const std::vector<Host> &population)
+Individual DriverGeneticAlgorithm::pool(const std::vector<Individual> &population)
 {
 	return population.at( rand()%PARENTS_TO_BE_CHOSEN );
 }
