@@ -15,8 +15,7 @@
 
 
 //--------------------------------------------------------------------------------
-/**Class Individual declaration, it's data and operations like creating a chromossome can be found here
-*/
+//Class Individual declaration
 class Individual: public Chromosome {
 	public:
 		/**Build an individual with random chromossome
