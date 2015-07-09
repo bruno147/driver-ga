@@ -4,19 +4,9 @@
 #include "FSM.h"
 
 class FSMDriver5;
-
- /**
-  * @brief StraightLine state.
-  * @details Class to treat the state where there is a minimal curvature possible, this state is important considering that it can perform maximum speed.
-  * @param start_gear initial gear set at the begining of the race
-  * @param low_gear_limit threshlod to bound low gears.
-  * @param low_rpm threshlod of rpm to delimit the change of low gears.
-  * @param average_rpm threshlod to decrease high gears.
-  * @param high_rpm threshlod to delimit the change of high gears.
-  */
+/**Class to treat the state where there is a minimal curvature possible, this state is important considering that it can perform maximum speed.*/
 class StraightLine : public DrivingState<FSMDriver5> {
 public:
-    /** start gear is the gear value set to the begining of the race*/
     static int START_GEAR;
     
     StraightLine(int _sg = 1, int _lgl = 4, int _lrpm = 1500,
