@@ -62,7 +62,7 @@ private:
     float safeDist;
     /** distance is the highest value of the 19 track sensors
     */
-    static float distance
+    static float distance;
     /** target_speed is the speed the car must reach, it is calculated based on distance, base_speed and speed_factor
     */
     static float targetSpeed;
