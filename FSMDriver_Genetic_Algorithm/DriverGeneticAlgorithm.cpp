@@ -69,9 +69,10 @@ void DriverGeneticAlgorithm::run() {
 
 void DriverGeneticAlgorithm::evaluatePopulation(vector<Individual> &Population) {
 	for (unsigned int i = 0; i < POPULATION_SIZE; ++i){
+		// If the individual has not been tested yet test it
 		if (Population[i].getFitness() == 0) {
 			status(generationCount, i);
-			Population[i].runTest(setOfTracks);
+			Population[i].runTest(this->additionalParameters);
 		}
 	}
 }
@@ -152,9 +153,9 @@ void DriverGeneticAlgorithm::generateLog(int generation, vector<Individual> Popu
     if(generation==0){
     	logFile << "Genetic Algorithm at " << asctime(timeinfo) << endl;
 	    logFile << "TRACKS: ";
-        for(unsigned int i = 0; i < setOfTracks.size(); ++i)
+        for(unsigned int i = 0; i < this->additionalParameters.size(); ++i)
         {
-            logFile << setOfTracks.at(i) << ", ";
+            logFile << this->additionalParameters.at(i) << ", ";
         }
         logFile << endl;
     	logFile << "Parameters:" << endl;

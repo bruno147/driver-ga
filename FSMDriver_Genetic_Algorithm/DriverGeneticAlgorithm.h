@@ -20,13 +20,14 @@ private:
 	/**Stores the best individual so far
         */
 	Individual bestIndividual;
-	/**The set of tracks being tested
+	/**Provides GA an additional parameter
+	in the driver's case the set of tracks being tested
         */
-	std::vector<std::string> setOfTracks;
+	std::vector<std::string> additionalParameters;
 public:
 	/**Constructor
 	*/
-	DriverGeneticAlgorithm(std::vector<std::string> setOfTracks) : generationCount(0), setOfTracks(setOfTracks) {};
+	DriverGeneticAlgorithm(std::vector<std::string> additionalParameters = {}) : generationCount(0), additionalParameters(additionalParameters) {};
 	/**GA main method
 	*/
 	void run();
