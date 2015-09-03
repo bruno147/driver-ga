@@ -41,16 +41,16 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 # GA
 if(GA)
-	include_directories(include FSMDriver_Genetic_Algorithm)
+	include_directories(include Genetic_Algorithm)
 
 	# set(ROULLETE ON)
 	set(ELITISM ON)
 	# GA source
 	set(GA_SOURCES
-		FSMDriver_Genetic_Algorithm/Individual.cpp
-		FSMDriver_Genetic_Algorithm/GaAdapter.cpp
-		FSMDriver_Genetic_Algorithm/Chromosome.cpp
-		FSMDriver_Genetic_Algorithm/DriverGeneticAlgorithm.cpp
+		Genetic_Algorithm/Individual.cpp
+		Genetic_Algorithm/GaAdapter.cpp
+		Genetic_Algorithm/Chromosome.cpp
+		Genetic_Algorithm/DriverGeneticAlgorithm.cpp
 		)
 
 
