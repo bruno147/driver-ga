@@ -1,11 +1,10 @@
-#include "Individual.h"
+#include "GaAdapter.h"
 //For shared memory
 #include <sys/shm.h>
 #include <sys/stat.h>
 #include <cstdlib>
 
 using namespace std;
-
 //--------------------------------------------------------------------------
 //Auxiliary methods
 string getPortNumber(int p) {
@@ -29,22 +28,8 @@ void clearPorts() {
 	}
 }
 
-//-----------------------------------------------------------------------
-//Class Individual methods definition
-string	Individual::getRandomBits (int length) {
-	string bits;
-
-	for (int i = 0; i < length; i++) {
-		if (RANDOM_NUMBER > 0.5f)
-			bits += "1";
-		else
-			bits += "0";
-	}
-
-	return bits;
-}
-
-void Individual::runTest(const std::vector<string>& setOfTracks) {
+//---------------------------------------------------------------------------
+void GaAdapter::callTest(const std::vector<string>& setOfTracks,Chromosome* chromosome) {
 	unsigned int numberOfTracks = setOfTracks.size();
 	string trackPath = getTrackPath();
 	//Vector of memory IDs
@@ -57,7 +42,7 @@ void Individual::runTest(const std::vector<string>& setOfTracks) {
 		if (k == numberOfTracks/MAX_SIMULTANEOUS_TESTS) {
 			for (unsigned int i = 0; i < numberOfTracks%MAX_SIMULTANEOUS_TESTS ; i++) {
 				command1 += "torcs -r " + trackPath + setOfTracks.at(i) + ".xml & ";
-				command2 += "./FSMDriver " + bits + " " + strID.at(i) + " port:" + getPortNumber(i+1) + " maxSteps:10000";
+				command2 += "./FSMDriver " + chromosome->getBits() + " " + strID.at(i) + " port:" + getPortNumber(i+1) + " maxSteps:10000";
 
 				if(i < numberOfTracks%MAX_SIMULTANEOUS_TESTS - 1)
 					command2 += " & ";
@@ -66,7 +51,7 @@ void Individual::runTest(const std::vector<string>& setOfTracks) {
 		else {
 			for (unsigned int i = 0; i < MAX_SIMULTANEOUS_TESTS ; i++) {
 				command1 += "torcs -r " + trackPath + setOfTracks.at(i) + ".xml & ";
-				command2 += "./FSMDriver " + bits + " " + strID.at(i) + " port:" + getPortNumber(i+1) + " maxSteps:10000";
+				command2 += "./FSMDriver " + chromosome->getBits() + " " + strID.at(i) + " port:" + getPortNumber(i+1) + " maxSteps:10000";
 
 				if(i < MAX_SIMULTANEOUS_TESTS - 1)
 					command2 += " & ";
@@ -83,10 +68,10 @@ void Individual::runTest(const std::vector<string>& setOfTracks) {
 	command1.clear();
 	command2.clear();
 	//Get the results generated and set them as the individual fitness
-	retrieveResults(strID);
+	retrieveResults(strID,chromosome);
 }
 
-void Individual::retrieveResults(const vector<string>& memoriesIDs) {
+void GaAdapter::retrieveResults(const vector<string>& memoriesIDs,Chromosome* chromosome) {
 
 	for(unsigned int i = 0; i < memoriesIDs.size(); ++i)
 	{
@@ -109,11 +94,11 @@ void Individual::retrieveResults(const vector<string>& memoriesIDs) {
 		/* Deallocate the shared memory segment. */
 		shmctl (memoryID, IPC_RMID, 0);
 
-		this->setFitness(fitness);
+		chromosome->setFitness(fitness);
 	}
 }
 
-std::vector<string> Individual::getMemoryID(int numberOfMemories) {
+std::vector<string> GaAdapter::getMemoryID(int numberOfMemories) {
 	std::vector<string> memoriesIDs;
 	for (int i = 0; i < numberOfMemories; ++i)
 	{
@@ -129,4 +114,3 @@ std::vector<string> Individual::getMemoryID(int numberOfMemories) {
 
 	return memoriesIDs;
 }
-
