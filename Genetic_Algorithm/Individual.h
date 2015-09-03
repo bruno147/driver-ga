@@ -20,27 +20,15 @@ class Individual: public Chromosome, public GaAdapter {
 			bits = in_bits;
 			fitness = in_fitness;
 		}
-
-		/**Method for allocating memory segments for the driver to save its results.
-		*It returns the IDs of the spaces allocated.
-		*/
-		
-		//std::vector<std::string> getMemoryID(int);
-
-		/**Method that access previous allocated memory IDs and retrieve its information
-		*It has a internal call of setFitness(float)
-		*/
-		//void retrieveResults(const std::vector<std::string>& memoriesID);
-
-		
-		/**Method that acctually tests each individual in TORCS environment for a set of tracks
+		/**Function that actually tests the individual
 		*/
 		virtual void runTest(const std::vector<std::string>& additionalParameters = {});
-
+		/**Returns a string with lenght size of random bits 
+		*/
 		std::string  getRandomBits(int length);	
-		
+		/**Overloaded operator that is used in merge sort
+		*/
 		inline bool operator<(const Individual& rhs) {
-			// overloaded operator that is used in merge sort
 			if(this->getFitness() > rhs.getFitness())
 				return true;
 			else

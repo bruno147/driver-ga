@@ -22,13 +22,22 @@ between GA and TORCS
 */
 class GaAdapter {
 public:
-	//Empty constructor
+	/**Empty constructor
+	*/
 	GaAdapter(){}
-	//Request and return memory IDs from the system
+
+	/**Method for allocating memory segments for the driver to save its results.
+	*It returns the IDs of the spaces allocated.
+	*/	
 	std::vector<std::string> getMemoryID(int);
-	//Actual test function
+
+	/**Method that acctually tests each individual in TORCS environment for a set of tracks
+	*/
 	void callTest(const std::vector<std::string>& setOfTracks,Chromosome*);
-	//Acces the shared memory and return the results stored there
+
+	/**Method that access previous allocated memory IDs and retrieve its information
+	*It has a internal call of setFitness(float)
+	*/
 	void retrieveResults(const std::vector<std::string>& memoriesID,Chromosome*);
 };
 
