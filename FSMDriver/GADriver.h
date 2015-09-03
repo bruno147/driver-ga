@@ -15,7 +15,7 @@ public:
 	GADriver(): fitness(0) {}
 	virtual ~GADriver(){}
 	void setFitness(CarState cs);
-	void saveFitness(int segment_id);
+	void storeFitness(int segment_id);
 	inline float getFitness() {
 		return this->fitness;
 	}

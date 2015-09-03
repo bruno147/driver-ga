@@ -96,7 +96,7 @@ FSMDriver::FSMDriver(int argc, char** argv) : DrivingFSM<FSMDriver>(this), accel
 CarControl FSMDriver::wDrive(CarState cs) {
     transition(cs);
     setFitness(cs);
-    saveFitness(segment_id);
+    storeFitness(segment_id);
     return update(cs);
 }
 

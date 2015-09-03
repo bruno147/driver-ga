@@ -6,7 +6,7 @@ void GADriver::setFitness(CarState cs) {
 	fitness = cs.getDistRaced();
 }
 
-void GADriver::saveFitness(int segment_id) {
+void GADriver::storeFitness(int segment_id) {
 	float* shared_memory;
 
     /* Attach the shared memory segment. */
