@@ -1,9 +1,13 @@
-FSMDriver
+Genetic Algorithm
 =========
 
-Implementation of a [TORCS](http://torcs.sourceforge.net/) controller for the 
-[Simulated Car Racing Championship](http://arxiv.org/abs/1304.1672). The controller
-implements a finite state machine for driving.
+A genetic algorithm implementation for evolving the [FSMDriver](https://github.com/bruno147/fsmdriver) driving parameters. Although it was developed for this specific application the code can be used in any application.
+
+Usage
+---------------------
+There is a set of parameters arleady defined in Genetic_Algorithm/Chromosome.h those were used in the FSMDriver evolution. Feel free to try new combinations. The default fitness function is the distance covered (defined in FSMDriver/GADriver.cpp) you can also change that function to whatever fitness you want.
+
+If you want to use the GA in a different application simply change the methods in GaAdapter class based on what you want to use.
 
 Compiling & Executing
 ---------------------
@@ -16,10 +20,6 @@ Binary files will be created in the _bin_ directory. To compile:
 
 To execute:
 
-    torcs &
-    ./bin/FSMDriver
+    cd bin
+    ./DriverGeneticAlgorithm
 
-Finite State Machine
---------------------
-
-    Insert description.
