@@ -48,6 +48,7 @@ if(GA)
 	# GA source
 	set(GA_SOURCES
 		FSMDriver_Genetic_Algorithm/Individual.cpp
+		FSMDriver_Genetic_Algorithm/GaAdapter.cpp
 		FSMDriver_Genetic_Algorithm/Chromosome.cpp
 		FSMDriver_Genetic_Algorithm/DriverGeneticAlgorithm.cpp
 		)
